@@ -1,0 +1,13 @@
+{% extends "index.html" %}
+
+
+{% block content %}
+<h2>Editar tarefa</h2>
+<p>Data de criação: {{ tarefa.data }}</p>
+<form action="/editar/{{ tarefa.id }}" method="POST">
+	<input type="text" class="titulo_tarefa" name="titulo_tarefa" placeholder="Título da tarefa..." required value="{{ tarefa }}">
+	<button class="btn-edit">
+		<i class="bi bi-check2"></i>
+	</button>
+</form>
+{% endblock %}

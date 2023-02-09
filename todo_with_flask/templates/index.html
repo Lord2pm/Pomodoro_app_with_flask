@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Gerenciador de tarefas</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+	<link rel="icon" href="{{ url_for('static', filename='img/book.png') }}">
+</head>
+<body>
+	<nav>
+		<div>
+			<a href="/" class="logo">Lord 2pm</a>
+		</div>
+		<form action="/pesquisar" method="POST">
+			<input type="text" name="titulo_tarefa" class="titulo_tarefa0" required>
+			<button class="btn-search">
+				<i class="bi bi-search"></i>
+			</button>
+		</form>
+	</nav>
+	{% block content %}
+	<h2>Adicionar tarefa</h2>
+	<form action="/add_tarefa" method="POST">
+		<input type="text" class="titulo_tarefa" name="titulo_tarefa" placeholder="Título da tarefa..." required>
+		<button class="btn-add">
+			<i class="bi bi-plus"></i>
+		</button>
+	</form>
+	{% if tarefas %} 
+		<div class="tarefas">
+			<h2>Lista de tarefas</h2>
+			{% for tarefa in tarefas %}
+				{% if tarefa.estado == True %}
+				<div class="tarefa active">
+				{% else %}
+				<div class="tarefa">
+				{% endif %}
+					<span>{{ tarefa }}</span>
+					<div>
+						<a href="/comecar_tarefa/{{ tarefa.id }}" class="editar-eliminar">
+							<i class="bi bi-alarm"></i>
+						</a>
+						<a href="/tocar_som" class="editar-eliminar tocar">
+							<i class="bi bi-music-note-beamed"></i>
+						</a>
+						<a href="/editar/{{ tarefa.id }}" class="editar-eliminar">
+							<i class="bi bi-pencil-square"></i>
+						</a>
+						<a href="/eliminar/{{ tarefa.id }}" class="editar-eliminar">
+							<i class="bi bi-x"></i>
+						</a>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	{% endif %}
+	{% endblock %}
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.js"></script>
+
+	<script type="text/javascript">
+		var btn = document.querySelector(".tocar");
+		function tocarSom() {
+			$.ajax({
+				type: 'GET',
+				url: '/tocar_som',
+				data: {},
+			})
+		}
+		btn.addEventListener("click", (e) => {
+			e.preventDefault();
+			tocarSom();
+		})
+	</script>
+</body>
+</html>
